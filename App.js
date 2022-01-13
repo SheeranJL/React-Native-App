@@ -2,13 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View} from 'react-native';
 import {useContext, useState, useEffect} from 'react';
 import {Provider, appContext} from './context/context.js';
-
 import {auth, createUserProfileDocument} from './firebase/firebase.js'
 
-// import 'react-native-gesture-handler';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// const Stack = createStackNavigator();
+import Navigator from './Routes/app-stack.js';
+
 
 import AuthScreen from './components/Auth/login-register';
 
@@ -22,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 //Main app component//
-const App = () => {
+const App = (props) => {
 
   const {data, actions} = useContext(appContext)
   let unsubscribeFromAuth = null;
@@ -39,19 +36,22 @@ const App = () => {
             userData: { displayName: userAuth.displayName,  email: userAuth.email}
           })
         })
+
       }
 
       actions.setCurrentUser();
-
     })
   }, [])
 
-  return (
-    <View>
-      <AuthScreen />
 
+
+  return (
+    <View style={{flex: 1}}>
+      <Navigator />
     </View>
   )
+
+
 }
 
 

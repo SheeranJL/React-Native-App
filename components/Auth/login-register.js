@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {appContext} from '../../context/context.js';
 import {StyleSheet, Button, View, Text, TextInput} from 'react-native';
 
@@ -15,9 +15,16 @@ const AuthScreenStyles = {
 }
 
 
-const AuthScreen = () => {
+const AuthScreen = ({navigation}) => {
 
+  const {data, actions} = useContext(appContext);
   const [loginWithExisting, setLoginWithExisting] = useState(true);
+
+  useEffect(() => {
+    if (data.currentUser) {
+      navigation.navigate('Home')
+    }
+  }, [data.currentUser])
 
   return (
     <View style={AuthScreenStyles.authScreenStyle}>
