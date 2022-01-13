@@ -24,12 +24,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const snapshot = await userRef.get();
   const collectionSnapshot = await collectionRef.get();
 
-  if (!snapshot.exists) {                   //if snapshot returns false, then we know there isn't a user that exists within firestore against that ID therefore we will create an account.
-    const {displayName, email} = userAuth;  //Stripping the displayName and email from userAuth (which comes from google Auth)
-    const createdAt = new Date();           //Creating a timestamp for the creation of this new account
+  if (!snapshot.exists) {                      //if snapshot returns false, then we know there isn't a user that exists within firestore against that ID therefore we will create an account.
+    const {displayName, email} = userAuth;     //Stripping the displayName and email from userAuth (which comes from google Auth)
+    const createdAt = new Date();              //Creating a timestamp for the creation of this new account
 
     try {
-      await userRef.set({       //Here we're setting (creating) a new user within the 'users' collection in firestore using the unique UID as the users identifing document ID.
+      await userRef.set({    //Here we're setting (creating) a new user within the 'users' collection in firestore using the unique UID as the users identifing document ID.
         user: {displayName, email, createdAt, ...additionalData },
         data: {}
       })
@@ -37,12 +37,37 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
       console.log('error creating new account', error)
     }
   }
-  return userRef; //If the snapshot returns true, simply return the userRef of the authenticated user
+  return userRef;      //If the snapshot returns true, simply return the userRef of the authenticated user
 }
 
 
+//This function will save extracted phone contact information to firebase//
+export const saveDataToFirebase = async (userAuth, data) => {
+
+  const userRef = await firestore.doc(`users/${userAuth.uid}`);
+  const userData = await firestore.collection('users').doc(userAuth);
+
+  try {
+    await userData.update({
+      data
+    })
+  } catch(error) {
+    console.log('Error saving data to firestore', error)
+  }
+};
 
 
+export const getDataFromFirestore = async(userAuth) => {
+
+  const dataRef = await firestore.collecton('users').doc(userAuth);
+  const data = await dataRef.get();
+
+  if (!data.exists) {
+    return
+  } else {
+    return data.data();
+  }
+}
 
 
 

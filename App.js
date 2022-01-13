@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View} from 'react-native';
 import {useContext, useState, useEffect} from 'react';
 import {Provider, appContext} from './context/context.js';
-import {auth, createUserProfileDocument} from './firebase/firebase.js'
+import {auth, createUserProfileDocument, getDataFromFirestore} from './firebase/firebase.js'
 
 import Navigator from './Routes/app-stack.js';
 
@@ -37,6 +37,14 @@ const App = (props) => {
           })
         })
 
+        const onLoginData = async() => {
+          const firestoreData = await getDataFromFirestore(userAuth.uid);
+          if (firestoreData.data.length) {
+            const data = firestoreData.data.map(item => item);
+            actions.setPhoneContacts([...data])
+          }
+        }
+        onLoginData();
       }
 
       actions.setCurrentUser(userAuth);
