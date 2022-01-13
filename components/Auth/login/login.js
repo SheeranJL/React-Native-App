@@ -2,8 +2,6 @@ import {formStyles} from '../form-styles.js';
 import React, {useState, useContext} from 'react';
 
 import {View, TextInput, Text, StyleSheet} from 'react-native';
-
-
 import CustomButton from '../../reuseable/custom-button/custom-button.js';
 
 const Login = ({changeLoginMethod, currentMethod}) => {
@@ -14,7 +12,7 @@ const Login = ({changeLoginMethod, currentMethod}) => {
   return (
     <View style={formStyles.container}>
 
-      <Text>Sign in with an existing account</Text>
+      <Text style={{paddingBottom: 30, fontWeight:'bold', fontSize: 18 }}>Sign in with an existing account</Text>
 
       <Text>Email</Text>
       <TextInput
@@ -31,9 +29,16 @@ const Login = ({changeLoginMethod, currentMethod}) => {
         secureTextEntry={true}
       />
 
-      <CustomButton>Log in</CustomButton>
+      <View style={formStyles.signInButtons}>
+        <CustomButton>Log in</CustomButton>
+        <CustomButton isGoogleButton> Google </CustomButton>
+      </View>
 
-      <Text onClick={() => changeLoginMethod(!currentMethod)}>Don't have an account? Create one!</Text>
+      <Text
+        onPress={() => changeLoginMethod(!currentMethod)}
+        style={{paddingTop: 25}}>
+        Don't have an account? Create one!
+      </Text>
 
     </View>
   )

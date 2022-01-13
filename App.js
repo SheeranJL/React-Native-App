@@ -3,10 +3,10 @@ import { StyleSheet, Text, View} from 'react-native';
 import {useContext} from 'react';
 import {Provider, appContext} from './context/context.js';
 
-import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-const Stack = createStackNavigator();
+// import 'react-native-gesture-handler';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// const Stack = createStackNavigator();
 
 import AuthScreen from './components/Auth/login-register';
 

@@ -6,14 +6,20 @@ export const formStyles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 100,
   },
 
   input: {
     height: 40,
-    margin: 12,
+    width: 200,
+    margin: 20,
     borderWidth: 1,
     padding: 10,
-    bottomBorder: '1px solid black',
   },
+
+  signInButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  }
 
 });

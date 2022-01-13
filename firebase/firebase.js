@@ -17,8 +17,7 @@ const config = {
 
 
 
-firebase.initializeApp(config);  //initialising firebase within our application
-
+firebase.initializeApp(config);                 //initialising firebase within our application
 export const auth = firebase.auth();            //exporting the authentication method from firebase
 export const firestore = firebase.firestore();  //exoporting firestore so we can perform crud operations for data within our appliation to and from firestore
 

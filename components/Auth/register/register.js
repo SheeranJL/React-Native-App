@@ -20,7 +20,7 @@ const Register = ({changeLoginMethod, currentMethod}) => {
   return (
     <View style={formStyles.container}>
 
-      <Text>Register a new account</Text>
+      <Text style={{paddingBottom: 30, fontWeight:'bold', fontSize: 18 }}>Register a new account</Text>
 
       <Text>Display Name</Text>
       <TextInput
@@ -53,8 +53,12 @@ const Register = ({changeLoginMethod, currentMethod}) => {
       />
 
       <CustomButton>Sign Up!</CustomButton>
-      
-      <Text onClick={() => changeLoginMethod(!currentMethod)}> Already have an account? Sign in!</Text>
+
+      <Text
+        onPress={() => changeLoginMethod(!currentMethod)}
+        style={{paddingTop: 25}}>
+        Already have an account? Sign in!
+      </Text>
 
     </View>
   )
