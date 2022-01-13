@@ -4,15 +4,21 @@ export const appContext = createContext();
 
 export const Provider = (props) => {
 
-  const [test, setTest] = useState('test');
+  const [currentUser, setCurrentUser] = useState(null)
+  const [phoneContacts, setPhoneContacts] = useState([]);
+  const [emailContacts, setEmailContacts] = useState([]);
 
   return (
     <appContext.Provider value={{
       actions: {
-        setTest
+        setPhoneContacts,
+        setEmailContacts,
+        setCurrentUser,
       },
       data: {
-        test
+        phoneContacts,
+        emailContacts,
+        currentUser
       }
     }}>
       {props.children}

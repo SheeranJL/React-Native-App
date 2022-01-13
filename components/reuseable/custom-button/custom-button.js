@@ -26,14 +26,17 @@ const customButtonStyles = {
 }
 
 //Our custom button which we will utilise for any forms/components which require it.
-const CustomButton = (props) => {
-
-  console.log(props)
+const CustomButton = ({children, isGoogleButton, onPress}) => {
 
   return (
     <View>
-      <Pressable style={props.isGoogleButton ? customButtonStyles.googleButton : customButtonStyles.button}>
-        <Text style={{color: 'white'}}>{props.children}</Text>
+      <Pressable
+        style={isGoogleButton ? customButtonStyles.googleButton : customButtonStyles.button}
+        onPress={onPress}
+        >
+          <Text style={{color: 'white'}}>
+            {children}
+          </Text>
       </Pressable>
     </View>
   )
