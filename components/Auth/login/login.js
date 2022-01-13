@@ -4,6 +4,7 @@ import {appContext} from '../../../context/context.js';
 import {View, TextInput, Text, StyleSheet} from 'react-native';
 import CustomButton from '../../reuseable/custom-button/custom-button.js';
 import {signInWithGoogle} from '../../../firebase/firebase.js';
+import {auth} from '../../../firebase/firebase.js';
 
 
 
@@ -19,6 +20,19 @@ const Login = ({changeLoginMethod, currentMethod}) => {
       signInWithGoogle();
     } catch(error) {
       console.log('Error signing in with Google', error)
+    }
+  }
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    console.log('called');
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      setEmail('');
+      setPassword('');
+    } catch(error) {
+      console.log('error signing in manually', error)
     }
   }
 
@@ -44,7 +58,7 @@ const Login = ({changeLoginMethod, currentMethod}) => {
       />
 
       <View style={formStyles.signInButtons}>
-        <CustomButton>Log in</CustomButton>
+        <CustomButton onPress={handleSubmit}>Log in</CustomButton>
         <CustomButton isGoogleButton onPress={signInWithGoogle}> Google </CustomButton>
       </View>
 

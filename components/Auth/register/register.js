@@ -1,6 +1,7 @@
 import {formStyles} from '../form-styles.js';
 import React, {useState} from 'react';
 import {View, TextInput, Text, StyleSheet} from 'react-native';
+import {auth, createUserProfileDocument} from '../../../firebase/firebase.js';
 
 //Importing reusable components//
 import CustomButton from '../../reuseable/custom-button/custom-button.js';
@@ -8,13 +9,28 @@ import CustomButton from '../../reuseable/custom-button/custom-button.js';
 
 
 //This is our Register An Account form - It will render should the 'loginWithExisting' state in the AuthScreen component is false//
-const Register = ({changeLoginMethod, currentMethod}) => {
+const Register = ({changeLoginMethod, currentMethod}, props) => {
 
   //Local-state variables for capturaing form input//
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmedPassword, setConfirmedPassword] = useState('')
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      const {user} = await auth.createUserWithEmailAndPassword(email, password);
+      console.log(user);
+      await createUserProfileDocument(user, {displayName});
+      setDisplayName('');
+      setEmail('');
+      setPassword('');
+      setConfirmedPassword('');
+    } catch(error) {
+      console.log('error signing up new user', error)
+    }
+  }
 
 
   return (
@@ -52,7 +68,7 @@ const Register = ({changeLoginMethod, currentMethod}) => {
         secureTextEntry={true}
       />
 
-      <CustomButton>Sign Up!</CustomButton>
+      <CustomButton onPress={handleSubmit}>Sign Up!</CustomButton>
 
       <Text
         onPress={() => changeLoginMethod(!currentMethod)}

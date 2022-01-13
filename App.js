@@ -28,7 +28,7 @@ const App = (props) => {
     unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {  //Detect when there's a change in user auth from google auth Method (whether someone signed in/out).
 
       if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth, {phoneContacts: data.phoneContacts, emailContacts: data.emailContacts});
+        const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapshot => {
           actions.setCurrentUser({
             id: snapshot.id,
@@ -39,7 +39,7 @@ const App = (props) => {
 
       }
 
-      actions.setCurrentUser();
+      actions.setCurrentUser(userAuth);
     })
   }, [])
 

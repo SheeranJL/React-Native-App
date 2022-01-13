@@ -31,7 +31,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     try {
       await userRef.set({       //Here we're setting (creating) a new user within the 'users' collection in firestore using the unique UID as the users identifing document ID.
         user: {displayName, email, createdAt, ...additionalData },
-        data: {additionalData}
+        data: {}
       })
     } catch(error) {
       console.log('error creating new account', error)
@@ -39,6 +39,13 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   }
   return userRef; //If the snapshot returns true, simply return the userRef of the authenticated user
 }
+
+
+
+
+
+
+
 
 
 
