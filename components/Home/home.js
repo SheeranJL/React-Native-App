@@ -1,8 +1,10 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {appContext} from '../../context/context.js';
-import {View, TextInput, Text, StyleSheet, } from 'react-native';
+import {View, TextInput, Text, StyleSheet, ScrollView} from 'react-native';
 import {auth} from '../../firebase/firebase.js';
 import {HomeContainerStyles} from './home-styles.js';
+
+import EachContact from '../reuseable/each-contact/each-contact.js'
 
 //Importing plugin tool called 'Expo Contacts' to get phone contacts//
 import * as Contacts from 'expo-contacts';
@@ -22,7 +24,7 @@ const Home = () => {
       setInitialLoad(false);
       console.log('test')
     }
-  }, [])
+  }, [data.phoneContacts])
 
 
   //This function will reach into the users address book and obtain a list of all contacts//
@@ -30,6 +32,7 @@ const Home = () => {
   const handleGetContacts = () => {
     (async () => {
       const {status} = await Contacts.requestPermissionsAsync();  //<-- send a permission request to access contact list and wait for a response.
+
       if (status === 'granted') {                                 //<-- if the user accepts, then the status variable on requestPermissionsAsync will be 'granted'.
         const {data} = await Contacts.getContactsAsync({          //<-- All collected address book data will be contained within the 'data' variable
           fields: [Contacts.Fields.PhoneNumbers],                 //<-- Collecting the PhoneNumber field from Contacts but this will also return the name of the contact.
@@ -48,19 +51,25 @@ const Home = () => {
 
   return (
     <View style={HomeContainerStyles.container}>
+      <ScrollView>
       {
         data.phoneContacts.length && !initialLoad
-        ? (
-          <View>
-            {data.phoneContacts.map((i, index) => <Text>{i.firstName}</Text>)}
-          </View>
-        ) : (
-          <View>
-            <Text>Hello! Let's get started by importing your contact list.</Text>
-            <CustomButton onPress={handleGetContacts}> Grab my contacts </CustomButton>
-          </View>
-        )
+          ? (
+
+            <View>
+              {data.phoneContacts.map((i, index) => <EachContact data={i} key={index} />)}
+            </View>
+
+          ) : ( //test
+
+            <View>
+              <Text>Hello! Let's get started by importing your contact list.</Text>
+              <CustomButton onPress={handleGetContacts}> Grab my contacts </CustomButton>
+            </View>
+
+          )
       }
+      </ScrollView>
     </View>
   )
 }

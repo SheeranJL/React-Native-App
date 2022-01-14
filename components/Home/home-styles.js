@@ -7,5 +7,8 @@ export const HomeContainerStyles = StyleSheet.create ({
     alignItems: 'center',
     marginLeft: 10,
     marginRight: 10,
+    backgroundColor: `rgba(${248}, ${251}, ${252}, ${1})`,
+    height: 'auto',
+    overflow: 'scroll',
   }
 })

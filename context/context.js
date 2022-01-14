@@ -5,9 +5,8 @@ export const appContext = createContext();
 
 export const Provider = (props) => {
 
-  const [currentUser, setCurrentUser] = useState(null)
-  const [phoneContacts, setPhoneContacts] = useState([]);
-  const [emailContacts, setEmailContacts] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null)    //State for currently loggon on user ~ either null, or an object containing user details
+  const [phoneContacts, setPhoneContacts] = useState([]); //State containing the extracted data from users' phone book.
 
   useEffect(() => {
 
@@ -22,12 +21,10 @@ export const Provider = (props) => {
     <appContext.Provider value={{
       actions: {
         setPhoneContacts,
-        setEmailContacts,
         setCurrentUser,
       },
       data: {
         phoneContacts,
-        emailContacts,
         currentUser
       }
     }}>

@@ -59,7 +59,7 @@ export const saveDataToFirebase = async (userAuth, data) => {
 
 export const getDataFromFirestore = async(userAuth) => {
 
-  const dataRef = await firestore.collecton('users').doc(userAuth);
+  const dataRef = await firestore.collection('users').doc(userAuth);
   const data = await dataRef.get();
 
   if (!data.exists) {
