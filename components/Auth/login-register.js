@@ -23,7 +23,10 @@ const AuthScreen = ({navigation}) => {
   useEffect(() => {
     if (data.currentUser) {
       navigation.navigate('Home')
+    } else {
+      navigation.navigate('Auth')
     }
+    console.log(data.currentUser);
   }, [data.currentUser])
 
   return (

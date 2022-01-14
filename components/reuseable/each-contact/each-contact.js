@@ -16,8 +16,8 @@ const EachContact = (props) => {
           <Text>Picture goes here</Text>
         </View>
 
-        <View>
-          <Text>{props.data.firstName}</Text>
+        <View style={contactStyles.leftSideNameAndNumber}>
+          <Text>{`${props.data.firstName} ${props.data.lastName || ''}`}</Text>
           <Text>{props.data.phoneNumbers[0].number}</Text>
         </View>
 
