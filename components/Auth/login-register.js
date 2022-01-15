@@ -25,6 +25,7 @@ const AuthScreen = ({navigation}) => {
       navigation.navigate('Home')
     } else {
       navigation.navigate('Auth')
+      actions.setPhoneContacts([]);
     }
     console.log(data.currentUser);
   }, [data.currentUser])

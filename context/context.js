@@ -11,6 +11,7 @@ export const Provider = (props) => {
   useEffect(() => {
 
     if (currentUser) {
+      console.log('test')
       saveDataToFirebase(currentUser.id, phoneContacts)
     }
 

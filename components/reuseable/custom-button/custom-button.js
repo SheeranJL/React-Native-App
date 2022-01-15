@@ -8,9 +8,9 @@ const customButtonStyles = {
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
-    borderRadius: 4,
     elevation: 3,
     backgroundColor: 'black',
+    color: 'white',
   },
 
   googleButton: {
@@ -18,7 +18,6 @@ const customButtonStyles = {
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
-    borderRadius: 4,
     elevation: 3,
     backgroundColor: `rgba(${66}, ${133}, ${244}, ${1})`,
   },
@@ -34,7 +33,7 @@ const CustomButton = ({children, isGoogleButton, onPress}) => {
         style={isGoogleButton ? customButtonStyles.googleButton : customButtonStyles.button}
         onPress={onPress}
         >
-          <Text style={{color: 'white'}}>
+          <Text style={{textAlign: 'center', color: 'white'}}>
             {children}
           </Text>
       </Pressable>
