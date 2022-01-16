@@ -8,10 +8,10 @@ export const Provider = (props) => {
   const [currentUser, setCurrentUser] = useState(null)    //State for currently loggon on user ~ either null, or an object containing user details
   const [phoneContacts, setPhoneContacts] = useState([]); //State containing the extracted data from users' phone book.
 
-  useEffect(() => {
 
+  //Whenever the phoneContact list updates, and a user is currently authenticated, then we will update Firestore with this information//
+  useEffect(() => {
     if (currentUser) {
-      console.log('test')
       saveDataToFirebase(currentUser.id, phoneContacts)
     }
 

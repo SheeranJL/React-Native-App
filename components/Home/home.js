@@ -9,6 +9,7 @@ import EachContact from '../reuseable/each-contact/each-contact.js';
 import Header from './header/header.js';
 import CreateContactModal from '../Create-contact-modal/create-contact.js';
 import ContactDetails from '../Contact-more-details/contact-more-details.js';
+import ImportContacts from '../Import-contacts-screen/import-contacts.js';
 
 
 //Importing plugin tool called 'Expo Contacts' to get phone contacts//
@@ -19,86 +20,58 @@ import CustomButton from '../reuseable/custom-button/custom-button.js';
 
 const Home = () => {
 
+  //Importing context data and actions//
   const {data, actions} = useContext(appContext);
-  const [initialLoad, setInitialLoad] = useState(true);
 
+  //Local state//
+  const [initialLoad, setInitialLoad] = useState(true);
   const [newContactModal, setNewContactModal] = useState(false);
   const [moreInfoModal, setMoreInfoModal] = useState(false);
 
 
 
-  //If data is already loaded on page load, then render content//
+
   useEffect(() => {
-    if (data.phoneContacts.length) {
+    if (data.phoneContacts.length) {  // <-- If data is already loaded on page load, then render content//
       setInitialLoad(false);
-      console.log('test')
     }
   }, [data.phoneContacts])
 
 
-  //This function will reach into the users address book and obtain a list of all contacts//
-  //Here we're using the 'Expo Contacts' tool//
-  const handleGetContacts = () => {
-    (async () => {
-      const {status} = await Contacts.requestPermissionsAsync();  //<-- send a permission request to access contact list and wait for a response.
-
-      if (status === 'granted') {                           //<-- if the user accepts, then the status variable on requestPermissionsAsync will be 'granted'.
-        const {data} = await Contacts.getContactsAsync({    //<-- All collected address book data will be contained within the 'data' variable
-          fields: [Contacts.Fields.PhoneNumbers],           //<-- Collecting the PhoneNumber field from Contacts but this will also return the name of the contact.
-        });
-
-        if (data.length > 0) {                              //<-- We want to make sure that the data variable (which is an array of data) actually contains more than one contact.
-          const contact = [...data]
-          actions.setPhoneContacts(contact);                //<-- Saving the collected phonebook information to context state (phoneContacts). We will also be passing this data to firestore within context.
-          setInitialLoad(false);                            //<-- I decided to use a boolean value to prevent 'map is not a function' error in the render section below. This is akin to a loading state phase.
-        }
-      }
-      console.log(data.phoneContacts)
-    })();
-  };
-
-  console.log(moreInfoModal);
-
 
   return (
-    !newContactModal ?
-    (
-      <View style={HomeContainerStyles.container}>
-        <ScrollView>
-        {
-          data.phoneContacts.length && !initialLoad
 
-            ? (
-              <View style={{width: '100%'}}>
-                {
-                  moreInfoModal
-                  ? (
-                    <View style={{flex: 1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'center', alignItems:'center', width: '100%', height: '100%', position: 'absolute', zIndex: 1000}}>
-                      <ContactDetails data={moreInfoModal} toggleModal={setMoreInfoModal}/>
-                    </View>
-                  )
-                  : null
-                }
+    //If newContactModal is true, meaning the 'create contact' button has been clicked,
+    //then render the new contact screen. Else, render the main page with all the contacts.
+    newContactModal
+    ? (
+      //Create contact modal component//
+      <CreateContactModal setNewContactModal={setNewContactModal}/>
+    ) : (
+      <View style={{flex: 1}}>
+        { data.phoneContacts.length && !initialLoad //If phoneContact context state is populated with data and the initial render local state is false, then render the 'import contacts' screen//
+          ? (
+              //If the information icon button is clicked, then render the moreInfoModal component, else render all the of the contexts
+              moreInfoModal //<-- local state to track whether the 'more info' button has been clicked
+              ? (
+                <View style={{flex: 1, backgroundColor:'rgba(0,0,0,0.5)', justifyContent:'center', alignItems:'center', width: '100%', height: '100%', position: 'absolute', zIndex: 1000}}>
+                  <ContactDetails contactData={moreInfoModal} toggleModal={setMoreInfoModal}/>
+                </View>
+              )
+              : (
+                <ScrollView>
                 {data.phoneContacts.map((i, index) => <EachContact data={i} key={index} toggleMoreInfo={setMoreInfoModal}/>)}
-              </View>
-            ) : (
-              <View>
-                <Text>Hello! Let's get started by importing your contact list.</Text>
-                <CustomButton onPress={handleGetContacts}> Grab my contacts </CustomButton>
-              </View>
-            )
-        }
-        </ScrollView>
+                </ScrollView>
+              )
+        ) : (
+            <ImportContacts /> //Is there is no contacts in the phoneContacts context state, then the 'import contacts' screen will load.
+        )}
         <Header setNewContactModal={setNewContactModal}/>
       </View>
 
-    ) : (
-
-      <View>
-        <CreateContactModal setNewContactModal={setNewContactModal}/>
-      </View>
-
     )
+
+
 
   )
 }

@@ -15,8 +15,9 @@ const CreateContactModal = ({setNewContactModal}) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
+  const [validationErrors, setValidationErrors] = useState(false);
 
-  //Function to handle modal close on X click.
+  //Function to handle modal close on X click - this will close the modal and reset all field values//
   const handleCancel = () => {
     setFirstName('');
     setLastName('');
@@ -27,15 +28,18 @@ const CreateContactModal = ({setNewContactModal}) => {
     console.log('pressed')
   }
 
+
+
   const handleSubmit = () => {
 
+    // If no first name, or phone number is entered, then show a message explaining that these are required fields //
     if (!firstName && !phone) {
-      console.log('no name or phone')
+      setValidationErrors(true);
       return
     };
 
 
-    const randomIDGenerator = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 6);
+    const randomIDGenerator = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 6); //Generate random string value for the newly created contact.
     actions.setPhoneContacts([
       ...data.phoneContacts,
       {
@@ -47,8 +51,8 @@ const CreateContactModal = ({setNewContactModal}) => {
         phoneNumbers: [{number: phone}]
       },
     ]),
-
-    setNewContactModal(false);
+    setNewContactModal(false);  // Closing new contact modal
+    setValidationErrors(false); // Setting validation boolean state back to false
   }
 
 
@@ -67,7 +71,8 @@ const CreateContactModal = ({setNewContactModal}) => {
             <View style={createContactModal.contactInformation}>
               <TextInput
                 value={firstName}
-                onChangeText={setFirstName}/>
+                onChangeText={setFirstName}
+                placeholder='Required'/>
             </View>
           </View>
 
@@ -100,7 +105,8 @@ const CreateContactModal = ({setNewContactModal}) => {
             <View style={createContactModal.contactInformation}>
               <TextInput
                 value={phone}
-                onChangeText={setPhone}/>
+                onChangeText={setPhone}
+                placeholder='Required'/>
             </View>
           </View>
 
@@ -115,6 +121,11 @@ const CreateContactModal = ({setNewContactModal}) => {
             </View>
           </View>
 
+          {
+            validationErrors
+            ? <Text style={{textAlign: 'center', marginTop: 40, color: 'red', fontWeight: 'bold'}}> First name and phone number are required </Text>
+            : null
+          }
         </View>
 
 

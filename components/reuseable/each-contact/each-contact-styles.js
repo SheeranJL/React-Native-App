@@ -32,6 +32,11 @@ export const contactStyles = StyleSheet.create({
     fontSize: 40,
   },
 
+  profilePic: {
+    width: 40,
+    height: 40,
+  }
+
 
 
 });

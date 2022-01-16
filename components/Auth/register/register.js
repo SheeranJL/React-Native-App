@@ -16,9 +16,23 @@ const Register = ({changeLoginMethod, currentMethod}, props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmedPassword, setConfirmedPassword] = useState('')
+  const [validationError, setValidationError] = useState(false);
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+  const handleSubmit = async() => {
+
+    //Validating that displayName field, email field, and password field aren't blank
+    if (!email || !password) {
+      setValidationError(true); //<-- will cause a message to appear on user device prompting them to clean up any validation errors
+      return;
+    }
+
+    //validating whether the password value maches the confirmed password value
+    if (password !== confirmedPassword) {
+      setValidationError(true); //<-- will cause a message to appear on user device prompting them to clean up any validation errors
+      return;
+    }
+
+    //This code will create a new user in firebase using the entered email and password field. This will then trigger an auth state change in App.js and set the currentUser context state with that user//
     try {
       const {user} = await auth.createUserWithEmailAndPassword(email, password);
       console.log(user);
@@ -27,8 +41,10 @@ const Register = ({changeLoginMethod, currentMethod}, props) => {
       setEmail('');
       setPassword('');
       setConfirmedPassword('');
+      setValidationError(false);
     } catch(error) {
       console.log('error signing up new user', error)
+      setValidationError(true);
     }
   }
 
@@ -50,6 +66,7 @@ const Register = ({changeLoginMethod, currentMethod}, props) => {
         value={email}
         onChangeText={setEmail}
         style={formStyles.input}
+        placeholder='Required'
       />
 
       <Text>Password</Text>
@@ -58,6 +75,7 @@ const Register = ({changeLoginMethod, currentMethod}, props) => {
         onChangeText={setPassword}
         style={formStyles.input}
         secureTextEntry={true}
+        placeholder='Required'
       />
 
       <Text>Confirm Password</Text>
@@ -66,13 +84,19 @@ const Register = ({changeLoginMethod, currentMethod}, props) => {
         onChangeText={setConfirmedPassword}
         style={formStyles.input}
         secureTextEntry={true}
+        placeholder='Required'
       />
 
+      {
+        validationError
+        ? <Text style={formStyles.incorrectValidation}>All fields must be entered correctly, and both passwords must match.</Text>
+        : null
+      }
       <CustomButton onPress={handleSubmit}>Sign Up!</CustomButton>
 
       <Text
         onPress={() => changeLoginMethod(!currentMethod)}
-        style={{paddingTop: 25}}>
+        style={{paddingTop: 25, fontWeight: 'bold'}}>
         Already have an account? Sign in!
       </Text>
 

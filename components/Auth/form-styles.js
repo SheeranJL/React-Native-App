@@ -20,6 +20,16 @@ export const formStyles = StyleSheet.create({
   signInButtons: {
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+
+  incorrectValidation: {
+    color: 'red',
+    marginTop: 10,
+    marginBottom: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginLeft: 5,
+    marginRight: 5,
   }
 
 });

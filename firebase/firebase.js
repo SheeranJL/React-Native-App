@@ -15,6 +15,8 @@ const config = {
   measurementId: "G-01XPZCPCMH"
 };
 
+
+//When this code is executed it will create a new user document within firestore//
 export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   if (!userAuth) return;
@@ -44,9 +46,9 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 //This function will save extracted phone contact information to firebase//
 export const saveDataToFirebase = async (userAuth, data) => {
 
-  const userRef = await firestore.doc(`users/${userAuth.uid}`);
-  const userData = await firestore.collection('users').doc(userAuth);
+  const userData = await firestore.collection('users').doc(userAuth); //<-- getting a reference to the users' document (their individual record in firestore)
 
+  //Try to update the userData with the contacts we want to save against their profile//
   try {
     await userData.update({
       data
@@ -57,6 +59,8 @@ export const saveDataToFirebase = async (userAuth, data) => {
 };
 
 
+
+//This function is called upon first logging into the app and will grab the users contact data and return it to App.js where it will be populated in context phoneContacts//
 export const getDataFromFirestore = async(userAuth) => {
 
   const dataRef = await firestore.collection('users').doc(userAuth);
@@ -68,10 +72,6 @@ export const getDataFromFirestore = async(userAuth) => {
     return data.data();
   }
 }
-
-
-
-
 
 
 
